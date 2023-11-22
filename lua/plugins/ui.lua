@@ -1,10 +1,17 @@
 return {
     -- color and themes
     {
-        "catppuccin/nvim",
-        name = "catppuccin",
+        "navarasu/onedark.nvim",
+        lazy = false,
         priority = 1000,
-        config = function() vim.cmd.colorscheme("catppuccin") end,
+        opts = {
+            style = "warmer",
+            highlights = require("config.cmp_color"),
+        },
+        config = function(_, opts)
+            require("onedark").setup(opts)
+            vim.cmd.colorscheme("onedark")
+        end,
     },
 
     -- statusline

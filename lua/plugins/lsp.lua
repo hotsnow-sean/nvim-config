@@ -10,6 +10,8 @@ return {
         init = function()
             vim.keymap.set("n", "<leader>lr", function() vim.lsp.buf.rename() end)
             vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end)
+            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+            vim.keymap.set("n", "gl", function() vim.diagnostic.open_float() end)
             vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end)
             vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end)
         end,

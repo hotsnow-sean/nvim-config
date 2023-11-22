@@ -6,25 +6,6 @@ return {
     },
 
     {
-        "neovim/nvim-lspconfig",
-        init = function()
-            vim.keymap.set("n", "<leader>lr", function() vim.lsp.buf.rename() end)
-            vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end)
-            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
-            vim.keymap.set("n", "gl", function() vim.diagnostic.open_float() end)
-            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end)
-            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end)
-        end,
-        config = function()
-            local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
-            for type, icon in pairs(signs) do
-                local hl = "DiagnosticSign" .. type
-                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-            end
-        end,
-    },
-
-    {
         "williamboman/mason-lspconfig.nvim",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
@@ -87,6 +68,37 @@ return {
                 end,
             })
         end,
+    },
+
+    {
+        "kkharji/lspsaga.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = "neovim/nvim-lspconfig",
+        cmd = "Lspsaga",
+        init = function()
+            vim.keymap.set("n", "<leader>lr", "<cmd>Lspsaga rename<CR>")
+            vim.keymap.set("n", "<leader>la", "<cmd>Lspsaga code_action<CR>")
+            vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>")
+            vim.keymap.set("n", "gl", "<cmd>Lspsaga show_line_diagnostics<CR>")
+            vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+            vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+        end,
+        opts = {
+            error_sign = "󰅚",
+            warn_sign = "󰀪",
+            hint_sign = "󰌶",
+            infor_sign = "",
+            code_action_keys = {
+                quit = "q",
+                exec = "<CR>",
+            },
+            rename_action_keys = {
+                quit = "<Esc>",
+                exec = "<CR>",
+            },
+            border_style = "round",
+            rename_prompt_prefix = "▶",
+        },
     },
 
     {

@@ -36,6 +36,7 @@ return {
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
             {
                 "L3MON4D3/LuaSnip",
                 -- install jsregexp (optional!).
@@ -132,6 +133,27 @@ return {
             local cmp = require("cmp")
 
             cmp.setup(opts)
+
+            -- `/` cmdline setup.
+            cmp.setup.cmdline("/", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = "buffer" },
+                },
+            })
+            -- `:` cmdline setup.
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = "path" },
+                    {
+                        name = "cmdline",
+                        option = {
+                            ignore_cmds = { "Man", "!", "write", "wq", "wqall", "quit", "qall" },
+                        },
+                    },
+                },
+            })
 
             cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,

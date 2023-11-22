@@ -1,11 +1,35 @@
 return {
     {
+        "williamboman/mason.nvim",
+        cmd = { "Mason", "MasonUpdate" },
+        opts = {},
+    },
+
+    {
+        "neovim/nvim-lspconfig",
+        init = function()
+            vim.keymap.set("n", "<leader>lr", function() vim.lsp.buf.rename() end)
+            vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end)
+            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_next() end)
+            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_prev() end)
+        end,
+        config = function()
+            local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+            for type, icon in pairs(signs) do
+                local hl = "DiagnosticSign" .. type
+                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+            end
+        end,
+    },
+
+    {
         "williamboman/mason-lspconfig.nvim",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
             "neovim/nvim-lspconfig",
         },
+        cmd = { "LspInstall", "LspUninstall" },
         opts = {
             ensure_installed = { "lua_ls", "bashls", "vimls" },
             automatic_installation = true,
@@ -61,5 +85,11 @@ return {
                 end,
             })
         end,
+    },
+
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {},
     },
 }

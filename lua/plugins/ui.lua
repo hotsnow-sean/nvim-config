@@ -97,4 +97,10 @@ return {
             require("nvim-tree").setup(opts)
         end,
     },
+
+    -- improve ui
+    {
+        "stevearc/dressing.nvim",
+        opts = {},
+    },
 }

@@ -18,7 +18,7 @@ return {
     -- bufferline
     {
         "akinsho/bufferline.nvim",
-        event = "VeryLazy",
+        event = "BufReadPre",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "echasnovski/mini.bufremove",

@@ -17,7 +17,19 @@ return {
     {
         "echasnovski/mini.comment",
         event = "VeryLazy",
-        opts = {},
+        dependencies = {
+            {
+                "JoosepAlviste/nvim-ts-context-commentstring",
+                dependencies = "nvim-treesitter/nvim-treesitter",
+            },
+        },
+        opts = {
+            options = {
+                custom_commentstring = function()
+                    return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
+                end,
+            },
+        },
     },
 
     -- blankline
@@ -79,6 +91,11 @@ return {
                 end,
             })
         end,
-        opts = {},
+        config = function(_, opts)
+            require("gitsigns").setup(opts)
+
+            vim.keymap.set({ "n", "x", "o" }, "]h", "<cmd>Gitsigns next_hunk<CR>")
+            vim.keymap.set({ "n", "x", "o" }, "[h", "<cmd>Gitsigns prev_hunk<CR>")
+        end,
     },
 }

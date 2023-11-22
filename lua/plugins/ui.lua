@@ -4,9 +4,7 @@ return {
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
-        config = function()
-            vim.cmd.colorscheme("catppuccin")
-        end,
+        config = function() vim.cmd.colorscheme("catppuccin") end,
     },
 
     -- statusline
@@ -31,9 +29,7 @@ return {
         end,
         opts = {
             options = {
-                close_command = function(n)
-                    require("mini.bufremove").delete(n, false)
-                end,
+                close_command = function(n) require("mini.bufremove").delete(n, false) end,
                 diagnostics = "nvim_lsp",
                 offsets = {
                     {
@@ -42,7 +38,7 @@ return {
                         text_align = "left",
                         separator = true,
                         highlight = "Directory",
-                    }
+                    },
                 },
             },
         },
@@ -54,7 +50,7 @@ return {
         dependencies = "nvim-tree/nvim-web-devicons",
         cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         keys = {
-            { "<F7>", "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer", mode = { "v", "n", "i", "t" } }
+            { "<F7>", "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer", mode = { "v", "n", "i", "t" } },
         },
         init = function()
             local function open_nvim_tree(data)
@@ -73,10 +69,8 @@ return {
         end,
         config = function(_, opts)
             local api = require("nvim-tree.api")
-            api.events.subscribe(api.events.Event.FileCreated, function(file)
-                vim.cmd("edit " .. file.fname)
-            end)
+            api.events.subscribe(api.events.Event.FileCreated, function(file) vim.cmd("edit " .. file.fname) end)
             require("nvim-tree").setup(opts)
-        end
-    }
+        end,
+    },
 }

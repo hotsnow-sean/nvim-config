@@ -14,7 +14,7 @@ return {
         },
         cmd = { "LspInstall", "LspUninstall" },
         opts = {
-            ensure_installed = { "lua_ls", "bashls", "vimls" },
+            ensure_installed = { "lua_ls", "bashls", "vimls", "clangd", "cmake", "pyright", "rust_analyzer", "gopls" },
             automatic_installation = true,
         },
         config = function(_, opts)

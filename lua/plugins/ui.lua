@@ -40,7 +40,7 @@ return {
                 diagnostics = "nvim_lsp",
                 offsets = {
                     {
-                        filetype = "NvimTree",
+                        filetype = "neo-tree",
                         text = "File Explorer",
                         text_align = "left",
                         separator = true,
@@ -53,61 +53,38 @@ return {
 
     -- file explorer
     {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = "nvim-tree/nvim-web-devicons",
-        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+        "nvim-neo-tree/neo-tree.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim",
+        },
+        cmd = "Neotree",
         keys = {
-            { "<F7>", "<cmd>NvimTreeToggle<CR>", desc = "Toggle file explorer", mode = { "v", "n", "i", "t" } },
+            { "<F7>", "<cmd>Neotree toggle<CR>", desc = "Toggle file explorer", mode = { "v", "n", "i", "t" } },
         },
         init = function()
-            local function open_nvim_tree(data)
-                -- buffer is a directory
-                local directory = vim.fn.isdirectory(data.file) == 1
-                if not directory then
-                    return
-                end
-                -- create a new, empty buffer
-                vim.cmd.enew()
-                -- wipe the directory buffer
-                vim.cmd.bw(data.buf)
-                -- change to the directory
-                vim.cmd.cd(data.file)
-                -- open the tree
-                require("nvim-tree.api").tree.open()
-            end
-
-            vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-
-            vim.api.nvim_create_autocmd("QuitPre", {
+            vim.api.nvim_create_autocmd("BufEnter", {
+                desc = "Open Neo-Tree on startup with directory",
+                group = vim.api.nvim_create_augroup("neotree_start", { clear = true }),
                 callback = function()
-                    local invalid_win = {}
-                    local wins = vim.api.nvim_list_wins()
-                    for _, w in ipairs(wins) do
-                        local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(w))
-                        if bufname:match("NvimTree_") ~= nil then
-                            table.insert(invalid_win, w)
-                        end
-                    end
-                    if #invalid_win == #wins - 1 then
-                        -- Should quit, so we close all invalid windows.
-                        for _, w in ipairs(invalid_win) do
-                            vim.api.nvim_win_close(w, true)
+                    if package.loaded["neo-tree"] then
+                        vim.api.nvim_del_augroup_by_name("neotree_start")
+                    else
+                        local stats = (vim.uv or vim.loop).fs_stat(vim.api.nvim_buf_get_name(0)) -- TODO: REMOVE vim.loop WHEN DROPPING SUPPORT FOR Neovim v0.9
+                        if stats and stats.type == "directory" then
+                            vim.api.nvim_del_augroup_by_name("neotree_start")
+                            require("neo-tree")
                         end
                     end
                 end,
             })
         end,
-        config = function(_, opts)
-            local api = require("nvim-tree.api")
-            api.events.subscribe(api.events.Event.FileCreated, function(file) vim.cmd("edit " .. file.fname) end)
-
-            require("nvim-tree").setup(opts)
-        end,
-    },
-
-    -- improve ui
-    {
-        "stevearc/dressing.nvim",
-        opts = {},
+        opts = {
+            close_if_last_window = true,
+            window = {
+                width = 30,
+            },
+        },
     },
 }

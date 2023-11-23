@@ -72,6 +72,46 @@ return {
                 winblend = 3,
             },
         },
+        config = function(_, opts)
+            local Terminal = require("toggleterm.terminal").Terminal
+            local lazygit = Terminal:new({
+                cmd = "lazygit",
+                direction = "float",
+                float_opts = {
+                    border = "rounded",
+                },
+                on_open = function(term)
+                    vim.api.nvim_buf_set_keymap(
+                        term.bufnr,
+                        "n",
+                        "q",
+                        "<cmd>close<CR>",
+                        { noremap = true, silent = true }
+                    )
+                end,
+                on_close = function(_)
+                    local manager_avail, manager = pcall(require, "neo-tree.sources.manager")
+                    if manager_avail then
+                        for _, source in ipairs({ "filesystem", "git_status", "document_symbols" }) do
+                            local module = "neo-tree.sources." .. source
+                            if package.loaded[module] then
+                                manager.refresh(require(module).name)
+                            end
+                        end
+                    end
+                end,
+            })
+            ---@diagnostic disable-next-line: lowercase-global
+            function _lazygit_toggle() lazygit:toggle() end
+            vim.api.nvim_set_keymap(
+                "n",
+                "<leader>gg",
+                "<cmd>lua _lazygit_toggle()<CR>",
+                { noremap = true, silent = true }
+            )
+
+            require("toggleterm").setup(opts)
+        end,
     },
 
     -- git signs

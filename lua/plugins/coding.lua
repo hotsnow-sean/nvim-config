@@ -1,29 +1,38 @@
 return {
     -- format
     {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
+        "stevearc/conform.nvim",
+        event = { "BufWritePre" },
+        cmd = { "ConformInfo" },
+        keys = {
+            {
+                -- Customize or remove this keymap to your liking
+                "<leader>fm",
+                function() require("conform").format({ async = true, lsp_fallback = true }) end,
+                mode = "",
+                desc = "Format buffer",
+            },
+        },
+        -- Everything in opts will be passed to setup()
+        opts = {
+            -- Define your formatters
+            formatters_by_ft = {
+                lua = { "stylua" },
+                python = { "isort", "black" },
+                javascript = { { "prettierd", "prettier" } },
+            },
+            -- Set up format-on-save
+            -- format_on_save = { timeout_ms = 500, lsp_fallback = true },
+            -- Customize formatters
+            formatters = {
+                shfmt = {
+                    prepend_args = { "-i", "2" },
+                },
+            },
+        },
         init = function()
-            vim.cmd([[
-            augroup filetype_python
-              autocmd!
-              autocmd FileType python let b:neoformat_run_all_formatters = 1
-            augroup END
-            ]])
-
-            vim.keymap.set({ "n" }, "<leader>fm", "<cmd>Neoformat<CR>", { desc = "format current buffer" })
-        end,
-        config = function()
-            -- use these when filetype not found
-            vim.g.neoformat_basic_format_align = 1
-            vim.g.neoformat_basic_format_trim = 1
-            vim.g.neoformat_basic_format_retab = 1
-            vim.g.neoformat_only_msg_on_error = 1
-
-            vim.g.neoformat_enabled_c = { "clangformat" }
-            vim.g.neoformat_enabled_cpp = { "clangformat" }
-            vim.g.neoformat_enabled_python = { "isort", "black" }
-            vim.g.neoformat_enabled_lua = { "stylua" }
+            -- If you want the formatexpr, here is the place to set it
+            vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
         end,
     },
 

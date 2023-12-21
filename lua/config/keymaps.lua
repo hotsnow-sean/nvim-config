@@ -4,6 +4,9 @@ vim.keymap.set({ "i" }, "kj", "<Esc>", { silent = true })
 vim.keymap.set({ "n" }, "Z", "<cmd>wa<CR><cmd>q<CR>", { silent = true })
 vim.keymap.set({ "v" }, "Z", "<Esc>", { silent = true })
 
+vim.keymap.set("n", "j", [[v:count?"j":"gj"]], { noremap = true, expr = true })
+vim.keymap.set("n", "k", [[v:count?"k":"gk"]], { noremap = true, expr = true })
+
 vim.keymap.set({ "v", "n", "i", "t" }, "<C-h>", [[<C-w>h]])
 vim.keymap.set({ "v", "n", "i", "t" }, "<C-j>", [[<C-w>j]])
 vim.keymap.set({ "v", "n", "i", "t" }, "<C-k>", [[<C-w>k]])

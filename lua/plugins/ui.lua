@@ -2,6 +2,7 @@ return {
     -- color and themes
     {
         "navarasu/onedark.nvim",
+        enabled = false,
         lazy = false,
         priority = 1000,
         opts = {
@@ -11,6 +12,14 @@ return {
         config = function(_, opts)
             require("onedark").setup(opts)
             vim.cmd.colorscheme("onedark")
+        end,
+    },
+
+    {
+        "sainnhe/everforest",
+        lazy = false,
+        config = function()
+            vim.cmd.colorscheme("everforest")
         end,
     },
 

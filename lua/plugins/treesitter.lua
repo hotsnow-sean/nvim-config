@@ -72,6 +72,11 @@ return {
             require("nvim-treesitter.configs").setup(opts)
 
             vim.g.matchup_matchparen_offscreen = { method = "popup" }
+
+            -- fold
+            vim.opt.foldmethod = "expr"
+            vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+            vim.opt.foldenable = false
         end,
     },
 }

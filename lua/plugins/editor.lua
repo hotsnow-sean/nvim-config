@@ -148,4 +148,6 @@ return {
             vim.keymap.set({ "n", "x", "o" }, "[h", "<cmd>Gitsigns prev_hunk<CR>")
         end,
     },
+
+    "mg979/vim-visual-multi",
 }

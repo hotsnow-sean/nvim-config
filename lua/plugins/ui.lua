@@ -19,6 +19,7 @@ return {
         "sainnhe/everforest",
         lazy = false,
         config = function()
+            vim.g.everforest_diagnostic_line_highlight = 1
             vim.cmd.colorscheme("everforest")
         end,
     },

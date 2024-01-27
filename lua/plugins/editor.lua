@@ -3,6 +3,12 @@ return {
     {
         "rcarriga/nvim-notify",
         event = "VeryLazy",
+        cond = function() return not vim.g.vscode end,
+        init = function()
+            if vim.g.vscode then
+                vim.notify = vscode.notify
+            end
+        end,
         config = function() vim.notify = require("notify") end,
     },
 

@@ -143,26 +143,28 @@ return {
 
             cmp.setup(opts)
 
-            -- `/` cmdline setup.
-            cmp.setup.cmdline("/", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = {
-                    { name = "buffer" },
-                },
-            })
-            -- `:` cmdline setup.
-            cmp.setup.cmdline(":", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = {
-                    { name = "path" },
-                    {
-                        name = "cmdline",
-                        option = {
-                            ignore_cmds = { "Man", "!", "write", "wq", "wqall", "quit", "qall" },
+            if not vim.g.vscode then
+                -- `/` cmdline setup.
+                cmp.setup.cmdline("/", {
+                    mapping = cmp.mapping.preset.cmdline(),
+                    sources = {
+                        { name = "buffer" },
+                    },
+                })
+                -- `:` cmdline setup.
+                cmp.setup.cmdline(":", {
+                    mapping = cmp.mapping.preset.cmdline(),
+                    sources = {
+                        { name = "path" },
+                        {
+                            name = "cmdline",
+                            option = {
+                                ignore_cmds = { "Man", "!", "write", "wq", "wqall", "quit", "qall" },
+                            },
                         },
                     },
-                },
-            })
+                })
+            end
 
             cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,

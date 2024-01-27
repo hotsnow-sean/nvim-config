@@ -20,6 +20,7 @@ return {
         lazy = false,
         config = function()
             vim.g.everforest_diagnostic_line_highlight = 1
+            vim.g.everforest_better_performance = 1
             vim.cmd.colorscheme("everforest")
         end,
     },
@@ -29,7 +30,11 @@ return {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         dependencies = "nvim-tree/nvim-web-devicons",
-        config = true,
+        opts = {
+            options = {
+                theme = "everforest",
+            },
+        },
     },
 
     -- bufferline
